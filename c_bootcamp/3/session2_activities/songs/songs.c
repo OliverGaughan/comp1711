@@ -71,17 +71,23 @@ int main()
     // creating some temporary storage:
     // pos will be converted to an int, but we'll be getting it as a string
     char pos[4];
-    char arist[100];
+    char artist[100];
     char title[100];
     char year[4];
 
     while (fgets(line, buffer_size, input))
     {   
         // first we will get the info from the line
-        tokeniseRecord(line,",",pos,arist,title,year);
+        tokeniseRecord(line,",",pos,artist,title,year);
         // but then what??
 
-
+        strcpy(songs[counter].artist,artist);
+        strcpy(songs[counter].title,title);
+        strcpy(songs[counter].year,year);
+        songs[counter].position = atoi(pos);
+        counter += 1;
     }
+
+    printf("Number of songs: %d\n", counter);
 
 }
