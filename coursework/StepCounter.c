@@ -49,14 +49,16 @@ FILE *open_file(char filename[], char mode[]) {
         perror("File Not Found");
         exit(1);
     }
+    // If file is found, return the file
     return file;
 }
 
 void optionA() {
-
+    // Declare variable to hold the filename input from user
     char filename[100];
-
+    // Print prompt for user to input
     printf("Input filename:");
+    // Store user input in filename variable
     scanf("%s", filename);
 
     // Open the file as read
@@ -84,37 +86,109 @@ void optionA() {
         // Increase count of records
         recordCount += 1;
 
-        // Close the file and exit the program
     }
+    // Close the file
     fclose(file);
 }
 
 void optionC() {
+    // Declare variable to hold the index of the record with the minimum steps
     int minimumRecordIndex;
+    // Declare variable to hold the current minimum steps found (starting at the largest possible value)
     int minimumSteps = __INT_MAX__;
 
+    // Loop through all elements (records) in the array...
     for (int i=0; i < recordCount; i++) {
+        // Declare variable that stores the current elements step count
         int current = fitnessDataArray[i].steps;
+        // If the current records steps is less than the minimum steps variable...
         if (current < minimumSteps) {
+            // Change the value of minimum steps variable to the current record's step count
             minimumSteps = current;
+            // Store the index of the current element/record in minimum record index variable
             minimumRecordIndex = i;
         }
     }
+    // Print the fewest steps record's date and time
     printf("Fewest steps: %s %s\n", fitnessDataArray[minimumRecordIndex].date, fitnessDataArray[minimumRecordIndex].time);
 }
 
 void optionD() {
+    // Declare variable to hold the index of the record with the maximum steps
     int maxRecordIndex;
+    // Declare variable to hold the current maximum steps found (starting at 0)
     int maxSteps = 0;
 
+    // Loop through all elements (records) in the array...
     for (int i=0; i < recordCount; i++) {
+        // Declare variable that stores the current elements step count
         int current = fitnessDataArray[i].steps;
+        // If the current records steps is more than the maximum steps variable...
         if (current > maxSteps) {
+            // Change the value of maximum steps variable to the current record's step count
             maxSteps = current;
+            // Store the index of the current element/record in maximum record index variable
             maxRecordIndex = i;
         }
     }
+    // Print the largest steps record's date and time
     printf("Largest steps: %s %s\n", fitnessDataArray[maxRecordIndex].date, fitnessDataArray[maxRecordIndex].time);
+}
+
+void optionE() {
+    // Declare variable to store the total number of steps across all records
+    int totalSteps;
+
+    // Loop through all elements (records) in the array...
+    for (int i=0; i < recordCount; i++) {
+        // Update the total steps counter by the current records step count
+        totalSteps += fitnessDataArray[i].steps;
+    }
+
+    // Store the mean (total number of steps divided by the total nubmer of records) in a variable
+    int meanSteps = totalSteps/recordCount;
+
+    // Print the mean step count
+    printf("Mean step count: %d\n", meanSteps);
+}
+
+void optionF() {
+    // Declare variables to store the index of the starting and ending record in the overall longest continuous period 
+    int longestStart = 0;
+    int longestEnd = 0;
+
+    // Declare variables to store the index of the starting and ending record in the current continuous period being tracked 
+    int currentStart;
+    int currentEnd;
+
+    // Loop through all elements (records) in the array...
+    for (int i=0; i < recordCount; i++) {
+        // If the current record's step count is over 500...
+        if (fitnessDataArray[i].steps > 500) {
+            // Set the current start variable to the index of the current record
+            currentStart = i;
+            // Increment the i counter to point to the next index/record
+            i += 1;
+            // While the step count of the current index/record is greater than 500...
+            while (fitnessDataArray[i].steps > 500) {
+                // Increment the i counter to point to the next index/record
+                i += 1;
+            }
+
+            // Set the current end variable to the last index/record that had a step count of over 500 in the continuous period 
+            currentEnd = i-1;
+            
+            // If the current continuous period is greater than the overall continuous period...
+            if ((currentEnd-currentStart) > (longestEnd - longestStart)) {
+                // Update the indexes/values of the overall longest continuous period variables to the current ones
+                longestStart = currentStart;
+                longestEnd = currentEnd;
+            }
+        }
+    }
+
+    // Print the longest period start and end dates and times
+    printf("Longest period start: %s %s\nLongest period end: %s %s\n", fitnessDataArray[longestStart].date, fitnessDataArray[longestStart].time, fitnessDataArray[longestEnd].date, fitnessDataArray[longestEnd].time);
 }
 
 // Complete the main function
@@ -152,6 +226,14 @@ int main() {
             case 'D':
             case 'd':
                 optionD();
+                break;
+            case 'E':
+            case 'e':
+                optionE();
+                break;
+            case 'F':
+            case 'f':
+                optionF();
                 break;
             default:  break;
         }
