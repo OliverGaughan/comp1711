@@ -46,18 +46,18 @@ FILE *open_file(char filename[], char mode[]) {
     FILE *file = fopen(filename, mode);
     // If there is an error opening the file, return error message and exit program
     if  (file == NULL) {
-        perror("File Not Found");
+        printf("Error: Could not find or open the file.\n");
         exit(1);
     }
     // If file is found, return the file
     return file;
 }
 
-void optionA() {
+int optionA() {
     // Declare variable to hold the filename input from user
     char filename[100];
     // Print prompt for user to input
-    printf("Input filename:");
+    printf("Input filename: ");
     // Store user input in filename variable
     scanf("%s", filename);
 
@@ -87,11 +87,14 @@ void optionA() {
         recordCount += 1;
 
     }
+    // Display that the file has been loaded
+    printf("File successfully loaded.\n");
     // Close the file
     fclose(file);
+    return 0;
 }
 
-void optionC() {
+int optionC() {
     // Declare variable to hold the index of the record with the minimum steps
     int minimumRecordIndex;
     // Declare variable to hold the current minimum steps found (starting at the largest possible value)
@@ -111,9 +114,10 @@ void optionC() {
     }
     // Print the fewest steps record's date and time
     printf("Fewest steps: %s %s\n", fitnessDataArray[minimumRecordIndex].date, fitnessDataArray[minimumRecordIndex].time);
+    return 0;
 }
 
-void optionD() {
+int optionD() {
     // Declare variable to hold the index of the record with the maximum steps
     int maxRecordIndex;
     // Declare variable to hold the current maximum steps found (starting at 0)
@@ -133,11 +137,12 @@ void optionD() {
     }
     // Print the largest steps record's date and time
     printf("Largest steps: %s %s\n", fitnessDataArray[maxRecordIndex].date, fitnessDataArray[maxRecordIndex].time);
+    return 0;
 }
 
-void optionE() {
+int optionE() {
     // Declare variable to store the total number of steps across all records
-    int totalSteps;
+    int totalSteps = 0;
 
     // Loop through all elements (records) in the array...
     for (int i=0; i < recordCount; i++) {
@@ -150,9 +155,10 @@ void optionE() {
 
     // Print the mean step count
     printf("Mean step count: %d\n", meanSteps);
+    return 0;
 }
 
-void optionF() {
+int optionF() {
     // Declare variables to store the index of the starting and ending record in the overall longest continuous period 
     int longestStart = 0;
     int longestEnd = 0;
@@ -189,6 +195,7 @@ void optionF() {
 
     // Print the longest period start and end dates and times
     printf("Longest period start: %s %s\nLongest period end: %s %s\n", fitnessDataArray[longestStart].date, fitnessDataArray[longestStart].time, fitnessDataArray[longestEnd].date, fitnessDataArray[longestEnd].time);
+    return 0;
 }
 
 // Complete the main function
@@ -196,14 +203,15 @@ int main() {
     char option;
 
     do {
-        printf("Select from the following options:\n");
+        printf("Menu Options:\n");
         printf("A: Specify the filename to be imported\n");
         printf("B: Display the total number of records in the file\n");
         printf("C: Find the date and time of the timeslot with the fewest steps\n");
         printf("D: Find the data and time of the timeslot with the largest number of steps\n");
         printf("E: Find the mean step count of all the records in the file\n");
         printf("F: Find the longest continuous period where the step count is above 500 steps\n");
-        printf("Q: Exit the program\n");
+        printf("Q: Quit\n");
+        printf("Enter choice: ");
 
         scanf(" %c", &option);
 
@@ -235,7 +243,12 @@ int main() {
             case 'f':
                 optionF();
                 break;
-            default:  break;
+            case 'Q':
+            case 'q':
+                break;
+            default:
+                printf("Invalid choice. Try again.\n");
+                break;
         }
     } while (option != 'Q' && option != 'q');
 
