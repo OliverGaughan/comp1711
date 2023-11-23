@@ -26,6 +26,7 @@ int main() {
     arr[lineCounter] = '\0';
 
     int count = 0;
+    int count2 = 0;
     int GT1000 = 0;
 
     while (arr[count] != '\0') {
@@ -33,6 +34,13 @@ int main() {
         if (arr[count] > 1000) {
             GT1000 += 1;
             // printf("%d is also greater than 1000.\n", arr[count]);
+        }
+        int toFind = 2020 - arr[count];
+        while (arr[count2] != '\0') {
+            if (toFind == arr[count2]) {
+                printf("Pair found | %d + %d = %d", arr[count], arr[count2], arr[count]+arr[count2]);
+            }
+            count2 += 1;
         }
         count += 1;
     }

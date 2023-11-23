@@ -151,10 +151,16 @@ int optionE() {
     }
 
     // Store the mean (total number of steps divided by the total nubmer of records) in a variable
-    int meanSteps = totalSteps/recordCount;
-
+    float meanSteps = (float)totalSteps/recordCount;
+    // Round the means steps to the nearest integer
+    int meanStepsRounded;
+    if (meanSteps >= 0) {
+        meanStepsRounded = (int)(meanSteps + 0.5);
+    } else {
+        meanStepsRounded = (int)(meanSteps - 0.5);
+    }
     // Print the mean step count
-    printf("Mean step count: %d\n", meanSteps);
+    printf("Mean step count: %d\n", meanStepsRounded);
     return 0;
 }
 
@@ -213,7 +219,10 @@ int main() {
         printf("Q: Quit\n");
         printf("Enter choice: ");
 
+
         scanf(" %c", &option);
+
+        while (getchar() != '\n');
 
         switch(option)
         {

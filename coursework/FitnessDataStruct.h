@@ -14,7 +14,4 @@ typedef struct {
 void tokeniseRecord(const char *input, const char *delimiter,
                     char *date, char *time, char *steps);
 
-
-FILE *open_file(char filename[], char mode[]);
-
 #endif // FITNESS_DATA_STRUCT_H

@@ -17,21 +17,21 @@ int recordCount = 0;
 // Function to tokenize a record
 void tokeniseRecord(char *record, char delimiter, char *date, char *time, int *steps) {
     char *ptr = strtok(record, &delimiter);
-    if (ptr != NULL) {
+    if (ptr != NULL && ptr[4] == '-' && ptr[7] == '-' && ptr[10] == '\0') {
         strcpy(date, ptr);
     } else {
         printf("Error: invalid file\n");
         exit(1);
     }
     ptr = strtok(NULL, &delimiter);
-    if (ptr != NULL) {
+    if (ptr != NULL && ptr[2] == ':' && ptr[5] == '\0') {
         strcpy(time, ptr);
     } else {
         printf("Error: invalid file\n");
         exit(1);
     }
     ptr = strtok(NULL, &delimiter);
-    if (ptr != NULL) {
+    if (ptr != NULL && ptr[1] == '\0') {
         *steps = atoi(ptr);
     } else {
         printf("Error: invalid file\n");

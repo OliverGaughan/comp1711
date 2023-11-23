@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "fitnessdatastruct.h": "c",
+        "stdio.h": "c",
+        "random": "c"
+    }
+}
