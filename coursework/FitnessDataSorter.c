@@ -19,19 +19,19 @@ void tokeniseRecord(char *record, char delimiter, char *date, char *time, int *s
     char *ptr = strtok(record, &delimiter);
     if (ptr != NULL && ptr[4] == '-' && ptr[7] == '-' && ptr[10] == '\0') {
         strcpy(date, ptr);
+        ptr = strtok(NULL, &delimiter);
     } else {
         printf("Error: invalid file\n");
         exit(1);
     }
-    ptr = strtok(NULL, &delimiter);
     if (ptr != NULL && ptr[2] == ':' && ptr[5] == '\0') {
         strcpy(time, ptr);
+        ptr = strtok(NULL, &delimiter);
     } else {
         printf("Error: invalid file\n");
         exit(1);
     }
-    ptr = strtok(NULL, &delimiter);
-    if (ptr != NULL && ptr[1] == '\0') {
+    if (ptr != NULL && ptr[1] != '\0') {
         *steps = atoi(ptr);
     } else {
         printf("Error: invalid file\n");
@@ -51,14 +51,7 @@ FILE *open_file(char filename[], char mode[]) {
     return file;
 }
 
-int read_data() {
-    // Declare variable to hold the filename input from user
-    char filename[100];
-    // Print prompt for user to input
-    printf("Enter Filename: ");
-    // Store user input in filename variable
-    scanf("%s", filename);
-
+int read_data(char filename[]) {
     // Open the file as read
     FILE *file = open_file(filename, "r");
 
@@ -85,15 +78,22 @@ int read_data() {
         recordCount += 1;
 
     }
-    // Display that the file has been loaded
-    // printf("File successfully loaded.\n");
     // Close the file
     fclose(file);
     return 0;
 }
 
 int main() {
-    read_data();
+
+    // Declare variable to hold the filename input from user
+    char filename[100];
+    // Print prompt for user to input
+    printf("Enter Filename: ");
+    // Store user input in filename variable
+    scanf("%s", filename);
+
+    read_data(filename);
+
     FitnessData temp;
     for (int i=0; i < recordCount; i++) {
         for (int j=0; j < recordCount; j++) {
@@ -105,7 +105,9 @@ int main() {
         }
     }
 
-    FILE *file = open_file("FitnessData_2023.csv.tsv", "w+");
+    strcat(filename, ".tsv");
+
+    FILE *file = open_file(filename, "w+");
 
     for (int i=0; i < recordCount; i++) {
         fprintf(file, "%s\t%s\t%d\n", fitnessDataArray[i].date, fitnessDataArray[i].time, fitnessDataArray[i].steps);
@@ -113,7 +115,7 @@ int main() {
 
     fclose(file);
 
-    printf("Data sorted and written to FitnessData_2023.csv.tsv\n");
+    printf("Data sorted and written to %s\n", filename);
 
     exit(0);
 }
